@@ -23,7 +23,8 @@ set(CMAKE_BUILD_TYPE release)
 option(NCNN_OPENMP "openmp support" ON)
 option(NCNN_STDIO "load model from external file" ON)
 option(NCNN_STRING "plain and verbose string" ON)
-option(NCNN_OPENCV "minimal opencv structure emulation" OFF)
+option(NCNN_OPENCV "minimal opencv structure emulation" ON)
+option(NCNN_OPENCL "opencl support" ON)
 
 if(NCNN_OPENMP)
     find_package(OpenMP)
@@ -31,7 +32,30 @@ if(NCNN_OPENMP)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
-add_definitions(-Wall -Wextra)
+if (NCNN_OPENCL)
+    find_package(OpenCL REQUIRED)
+    include_directories( ${OpenCL_INCLUDE_DIRS} )
+endif()
+
+#msvc does not support this compile option
+if(!MSVC) 
+    add_definitions(-Wall -Wextra)
+endif()
+
+# convert all the /MD to  /MT
+if (MSVC)
+    set(CompilerFlags
+        CMAKE_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG
+        CMAKE_C_FLAGS_RELEASE
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+        string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+    endforeach()
+endif(MSVC)
 
 add_definitions(-fPIC)
 add_definitions(-Ofast)
@@ -59,4 +83,5 @@ endif()
 add_subdirectory(src)
 if(NOT ANDROID AND NOT IOS)
 add_subdirectory(tools)
+add_subdirectory(autotest)
 endif()

@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 #include "blob.h"
@@ -9,6 +10,7 @@
 
 #include "test_convlution.h"
 #include "test_innerproduct.h"
+#include "test_model.h"
 #include "gtest/gtest.h"
 
 int main(int argc, char **argv){

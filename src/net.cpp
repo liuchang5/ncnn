@@ -737,6 +737,12 @@ void Extractor::set_light_mode(bool enable)
     lightmode = enable;
 }
 
+void Extractor::set_gpu_mode(bool enable)
+{
+    gpumode = enable;
+}
+
+
 void Extractor::set_num_threads(int _num_threads)
 {
     num_threads = _num_threads;

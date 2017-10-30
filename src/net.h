@@ -103,6 +103,11 @@ public:
     // disabled by default, but recommend to enable
     void set_light_mode(bool enable);
 
+    // this option is experimental.
+    // enable gpu mode, disable by default.
+    // gpu mode will accelerate layers by OpenCL
+    void set_gpu_mode(bool enable);
+
     // set thread count for this extractor
     // this will overwrite the global setting
     // default count is system depended
@@ -134,6 +139,7 @@ private:
     const Net* net;
     std::vector<Mat> blob_mats;
     bool lightmode;
+    bool gpumode;
     int num_threads;
 };
 

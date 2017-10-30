@@ -19,5 +19,9 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/../src)
 # add cpp and lib files
 add_executable(autotest autotest.cpp)
 
+if (NCNN_OPENCL)
+    target_link_libraries(autotest ${OpenCL_LIBRARY} )
+endif()
+
 target_link_libraries(autotest ${project_library_target_name} ${REQUIRED_LIBRARIES} gtest gmock)
 target_link_libraries(autotest ncnn)
